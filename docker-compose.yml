@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres-nestjs
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    volumes:
+      - dev-postgres-data:/var/lib/postgres/data
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: pgadmin-nestjs
+    image: dpage/pgadmin4
+    ports:
+      - '8080:80'
+    volumes:
+      - dev-pgadmin-data:/var/lib/pgadmin/data
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  dev-postgres-data:
+  dev-pgadmin-data:
